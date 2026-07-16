@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>一切問題的答案</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      overflow: hidden;
+      font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+      color: #fff;
+      background:
+        radial-gradient(circle at 18% 18%, rgba(166, 122, 255, 0.35), transparent 28%),
+        radial-gradient(circle at 82% 14%, rgba(91, 190, 255, 0.22), transparent 26%),
+        radial-gradient(circle at 50% 88%, rgba(255, 220, 140, 0.12), transparent 35%),
+        linear-gradient(180deg, #07031d 0%, #120728 48%, #03010a 100%);
+    }
+
+    .stars,
+    .stars::before,
+    .stars::after {
+      position: fixed;
+      inset: 0;
+      content: "";
+      pointer-events: none;
+      background-repeat: repeat;
+      animation: starDrift 120s linear infinite;
+    }
+
+    .stars {
+      background-image:
+        radial-gradient(#ffffff 1px, transparent 1px),
+        radial-gradient(#d9c7ff 1px, transparent 1px);
+      background-size: 120px 120px, 230px 230px;
+      opacity: 0.65;
+    }
+
+    .stars::before {
+      background-image:
+        radial-gradient(#fff3ba 1px, transparent 1px),
+        radial-gradient(#99ddff 1px, transparent 1px);
+      background-size: 180px 180px, 310px 310px;
+      opacity: 0.45;
+      animation-duration: 180s;
+    }
+
+    .stars::after {
+      background-image:
+        radial-gradient(rgba(255,255,255,0.85) 1px, transparent 1px);
+      background-size: 90px 90px;
+      opacity: 0.25;
+      animation-duration: 220s;
+    }
+
+    @keyframes starDrift {
+      from {
+        transform: translateY(0);
+      }
+      to {
+        transform: translateY(-360px);
+      }
+    }
+
+    .moon {
+      position: fixed;
+      top: 7vh;
+      right: 9vw;
+      width: 122px;
+      height: 122px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 36% 35%, #fff9d7, #dcc88b 58%, #8d7347 100%);
+      box-shadow:
+        0 0 36px rgba(255, 238, 173, 0.65),
+        0 0 96px rgba(172, 130, 255, 0.35);
+      opacity: 0.88;
+    }
+
+    .moon::after {
+      content: "";
+      position: absolute;
+      top: 8px;
+      left: -20px;
+      width: 122px;
+      height: 122px;
+      border-radius: 50%;
+      background: #07031d;
+      opacity: 0.45;
+    }
+
+    .mist {
+      position: fixed;
+      inset: auto -20vw -20vh -20vw;
+      height: 45vh;
+      background:
+        radial-gradient(circle at 20% 40%, rgba(171, 135, 255, 0.16), transparent 28%),
+        radial-gradient(circle at 70% 50%, rgba(110, 185, 255, 0.12), transparent 30%);
+      filter: blur(24px);
+      opacity: 0.8;
+      pointer-events: none;
+      animation: mistMove 12s ease-in-out infinite alternate;
+    }
+
+    @keyframes mistMove {
+      from {
+        transform: translateX(-3vw);
+      }
+      to {
+        transform: translateX(3vw);
+      }
+    }
+
+    .page {
+      position: relative;
+      z-index: 2;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 26px;
+    }
+
+    .altar {
+      width: min(94vw, 560px);
+      text-align: center;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(28px, 6vw, 48px);
+      letter-spacing: 0.12em;
+      font-weight: 900;
+      line-height: 1.25;
+      text-shadow:
+        0 0 12px rgba(221, 199, 255, 0.95),
+        0 0 34px rgba(116, 82, 255, 0.75);
+    }
+
+    .subtitle {
+      margin: 0 auto 22px;
+      max-width: 460px;
+      color: #ded3ff;
+      line-height: 1.8;
+      font-size: 15px;
+      font-weight: 400;
+      opacity: 0.92;
+    }
+
+    .button-zone {
+      margin: 0 auto 24px;
+    }
+
+    .magic-button {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 114px;
+      height: 114px;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      background:
+        radial-gradient(circle, rgba(255, 241, 184, 0.25), rgba(129, 85, 255, 0.24), transparent 70%);
+      box-shadow:
+        0 0 24px rgba(255, 235, 170, 0.58),
+        0 0 52px rgba(144, 96, 255, 0.7);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+
+    .magic-button:hover {
+      transform: translateY(-3px) scale(1.045);
+      filter: brightness(1.18);
+    }
+
+    .magic-button:active {
+      transform: scale(0.94);
+    }
+
+    .magic-button img {
+      width: 94px;
+      height: 94px;
+      object-fit: contain;
+      pointer-events: none;
+      filter:
+        drop-shadow(0 0 10px rgba(255, 236, 180, 0.95))
+        drop-shadow(0 0 22px rgba(155, 116, 255, 0.88));
+    }
+
+    .button-text {
+      margin-top: 14px;
+      color: #ffedb2;
+      letter-spacing: 0.14em;
+      font-size: 14px;
+      font-weight: 500;
+      text-shadow: 0 0 12px rgba(255, 225, 150, 0.48);
+    }
+
+    .card-wrap {
+      position: relative;
+      margin: 0 auto;
+      width: min(82vw, 350px);
+      height: min(118vw, 500px);
+      max-height: 500px;
+      perspective: 1200px;
+    }
+
+    .card {
+      position: absolute;
+      inset: 0;
+      border-radius: 25px;
+      transform-style: preserve-3d;
+      transition: transform 950ms cubic-bezier(.18,.82,.28,1);
+    }
+
+    .card.revealed {
+      transform: rotateY(180deg);
+    }
+
+    .card-face {
+      position: absolute;
+      inset: 0;
+      border-radius: 25px;
+      backface-visibility: hidden;
+      overflow: hidden;
+      border: 1px solid rgba(255, 235, 178, 0.56);
+      box-shadow:
+        0 0 0 2px rgba(155, 116, 255, 0.18),
+        0 22px 65px rgba(0, 0, 0, 0.6),
+        0 0 56px rgba(132, 83, 255, 0.38);
+    }
+
+    .card-back {
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.08), transparent 34%),
+        radial-gradient(circle at center, rgba(225, 200, 255, 0.24), transparent 36%),
+        linear-gradient(180deg, #24114c, #080215);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card-back::before {
+      content: "";
+      position: absolute;
+      inset: 22px;
+      border-radius: 18px;
+      border: 1px solid rgba(255, 230, 170, 0.56);
+      box-shadow: inset 0 0 30px rgba(255, 230, 170, 0.16);
+    }
+
+    .sigil {
+      position: relative;
+      width: 185px;
+      height: 185px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 238, 184, 0.9);
+      box-shadow:
+        0 0 24px rgba(255, 238, 184, 0.48),
+        inset 0 0 26px rgba(130, 90, 255, 0.48);
+      animation: pulse 3.8s ease-in-out infinite;
+    }
+
+    .sigil::before,
+    .sigil::after {
+      content: "";
+      position: absolute;
+      inset: 28px;
+      border: 1px solid rgba(196, 170, 255, 0.9);
+      transform: rotate(45deg);
+      box-shadow: 0 0 18px rgba(196, 170, 255, 0.45);
+    }
+
+    .sigil::after {
+      inset: 52px;
+      border-radius: 50%;
+      transform: none;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+        opacity: 0.84;
+      }
+      50% {
+        transform: scale(1.045);
+        opacity: 1;
+      }
+    }
+
+    .card-front {
+      transform: rotateY(180deg);
+      background:
+        radial-gradient(circle at 50% 10%, rgba(255, 240, 181, 0.22), transparent 24%),
+        radial-gradient(circle at 50% 50%, rgba(135, 92, 255, 0.23), transparent 45%),
+        linear-gradient(180deg, #190b39, #05020f);
+      padding: 30px 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .card-front::before {
+      content: "";
+      position: absolute;
+      inset: 18px;
+      border-radius: 18px;
+      border: 1px solid rgba(255, 230, 170, 0.6);
+      pointer-events: none;
+    }
+
+    .card-title {
+      position: relative;
+      color: #ffedb0;
+      letter-spacing: 0.2em;
+      font-size: 14px;
+      font-weight: 700;
+      text-shadow: 0 0 12px rgba(255, 225, 150, 0.65);
+    }
+
+    .advice {
+      position: relative;
+      margin: auto 0;
+      padding: 22px 8px;
+      font-size: clamp(23px, 5.4vw, 32px);
+      line-height: 1.58;
+      font-weight: 500;
+      color: #fffaf0;
+      text-shadow:
+        0 0 12px rgba(255, 255, 255, 0.36),
+        0 0 25px rgba(150, 104, 255, 0.58);
+    }
+
+    .spark {
+      position: fixed;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      pointer-events: none;
+      background: #fff2b8;
+      box-shadow:
+        0 0 10px #fff2b8,
+        0 0 22px #9b74ff;
+      animation: fly 900ms ease-out forwards;
+      z-index: 9;
+    }
+
+    @keyframes fly {
+      from {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+      }
+      to {
+        transform: translate(var(--x), var(--y)) scale(0);
+        opacity: 0;
+      }
+    }
+
+    @media (max-height: 820px) {
+      body {
+        overflow-y: auto;
+      }
+
+      .page {
+        align-items: flex-start;
+        overflow-y: auto;
+      }
+
+      .card-wrap {
+        height: 430px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="stars"></div>
+  <div class="moon"></div>
+  <div class="mist"></div>
+
+  <main class="page">
+    <section class="altar">
+      <h1>跟隨魔法的指引<br>解決心中的疑問</h1>
+
+      <p class="subtitle">
+        在心中默念你的問題，<br>
+        在最安靜的一瞬間，按下抽牌。
+      </p>
+
+      <div class="button-zone">
+        <button class="magic-button" id="drawButton" aria-label="抽取魔法牌">
+          <img src="/magic.gif" alt="魔法抽牌按鈕">
+        </button>
+
+        <div class="button-text">點擊抽牌</div>
+      </div>
+
+      <div class="card-wrap">
+        <div class="card" id="card">
+          <div class="card-face card-back">
+            <div class="sigil"></div>
+          </div>
+
+          <div class="card-face card-front">
+            <div class="card-title">魔法牌的回答</div>
+            <div class="advice" id="adviceText">等待星光回應……</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script type="text/plain" id="advice-data">
+一個人的時候，更要沉得住氣。
+一切皆相連且相互依存。
+一切表象皆為幻象。
+一寸光陰一寸金。
+一直等，只會把機會等掉。
+一諾千金。
+一鼓作氣。
+不卑不亢。
+不完美就像裂縫，是光照進來的地方。
+不對的事不要做。
+不想著去驚艷所有人。
+不戰而勝是最好的勝利。
+不是過於挑剔。
+不為所動。
+不爭則不敗。
+不爭辯。
+不要令自己了無新意。
+不要再執迷不悟。
+不要再對自己那麼嚴苛。
+不要動搖。
+不要吹噓你自己的成功。
+不要因為焦慮而想走捷徑。
+不要固執。
+要堅持，但不要執著。
+不要執著。
+不要執著於肉體。
+不要太依賴他人。
+不要安守現狀。
+不要害怕建設性的批評。
+不要害怕接收建設性的批評。
+不要害怕重新開始。
+不要害怕隱藏的幻象。
+不要對小小不幸太敏感，要專心實現未來的大計劃。
+不要對小評論耿耿於懷。
+不要張揚。
+不要從表象中尋求真理。
+不要把感情的力量浪費在瑣碎小事上。
+不要把自己局限在小小的條條框框裡。
+不要抗拒突如其來的改變。
+不要拿自己的起點與別人的中途相比。
+不要拿自己的起點與別人的巔峰相比。
+不要渴望不符合你身份的事。
+不要為了利益交易你的靈魂。
+不要為了追求安全感而接受低於你應得的待遇。
+不要燃燒殆盡。
+不要當縮頭烏龜，勇敢迎接風暴。
+不要評判他人，專注於修正你自己的錯誤。
+不要說他人的過失。
+不要讓批評困擾你。
+不要讓注意力分散。
+不要貪快。
+不要追求天性中不屬於你的東西。
+不要追逐大眾的讚美。
+不要逃避衝突。
+不要過度執著於自己。
+不要過於固執。
+不要鑽牛角尖。
+不鑑前車，必入迷途。
+不需要到處證明自己。
+不需要對每一件小事都有所反應。
+世事無常。
+世界因你而更溫暖。
+世間萬物皆轉瞬即逝。
+丟掉壞習慣。
+丟掉舊的思維模式。
+並非所有事情都需要回應。
+中庸之道，過猶不及。
+主動放下憂慮。
+之後再想辦法吧。
+事情往往不像表面看起來那麼簡單。
+事情自然而然就會圓滿。
+享受你贏得的成功。
+享受小事，因為有一天你會意識到它們其實很大。
+人不經過磨練，就成不了才。
+人們自然會被真實的人所吸引。
+人守住原則，才能走對路。
+人必須接受磨練，才能成材。
+人是有裂痕的陶器——光就是透過這些裂痕照進來的。
+人生如夢。
+仔細傾聽反對觀點。
+仔細傾聽所有反對觀點。
+仔細審視那些你正試圖逃避的事物。
+付出，獲得更多。
+以不變應萬變。
+以他人希望的方式對待他人。
+以他人希望被對待的方式對待他人。
+以善良回應傷害。
+以誠信為錨。
+以誠實的基礎。
+以身作則，變革先行。
+仰不愧天，俯不怍人。
+仰望星空，但要腳踏實地。
+你不是有安排嗎？
+你僅僅因為存在就具有價值。
+你創造你自己的好運或壞運。
+你反應太大了。
+你太執著了。
+你想太多了。
+你所見的一切都是暫時的幻象。
+你教會別人如何對待你。
+你教會別人如何愛你。
+你是你命運的主人。
+你是你自己人生的負責人。
+你是自己人生的建築師。
+你更喜歡因付出的努力而得到結果。
+你會後悔的。
+你本身就已足夠。
+你本身就是一個完整的故事。
+你每次都這樣。
+你決定吧。
+你為什麼還在乎？
+你的價值是與生俱來的，無需掙取。
+你的價值是非賣品。
+你的善良很珍貴，但請守好自己的門戶。
+你的實力和成果，別人都看在眼裡。
+你的環境會影響你的思維方式。
+你的環境與習慣改變了你。
+你的直覺比他人的言語更準確。
+你的視角，決定了你的風景。
+你的視角決定了你的現實。
+你的聲音是一座橋，讓你的想法傳遞給世界。
+你的誠信是你自己的鏡子。
+你總是憑情緒做決定。
+你自己想辦法吧。
+你越想別人認同自己，就越感到失控。
+你開心就好。
+使用你既有的資源。
+保持一致。
+保持你的初心。
+保持傳統。
+保持冷靜。
+保持堅定。
+保持自我堅定。
+保持好奇心以讓生活有趣。
+保持安全距離。
+保持專注目標。
+保持心思清晰。
+保持敞開的心，就是光明的燈塔。
+保持樂觀。
+保持穩定的節奏。
+保持簡單專注。
+保持耐心。
+保持謙虛。
+保持謹慎與觀察。
+保持適度。
+保持開放的心態。
+保持開放的心胸。
+保持靈活，僵化是死亡的前兆。
+保持靈活。
+保護你的平靜。
+保護你的能量。
+信任他人。
+信任他人，難能可貴。
+信任你身邊的人。
+信任是基石。
+信任是將心編織在一起的金線。
+信任是跨越峽谷的橋樑。
+信任源於真誠。
+信守諾言。
+信心是成功之母。
+信念是成功的基石。
+修身在己。
+倉促往往會造成傷害。
+做你自己內心的溫柔園丁。
+做善事永遠重要，即便沒人看見。
+做決定之前先想想後果。
+做細雨，而非嚴霜。
+停一停，想一想。
+健康是你最重要的資產。
+健康是唯一重要的財富。
+傲慢限制成長。
+傾聽。
+傾聽他人的觀點。
+傾聽以開拓你的觀點。
+傾聽你內在的聲音。
+傾聽反對觀點。
+像偵察兵一樣謹慎。
+像水一樣靈活，環境變了就調整步伐。
+像秋葉一樣釋懷。
+像站在懸崖邊一樣小心。
+優先考慮目標。
+優先考慮長期目標。
+允許自己快樂。
+先修正自己。
+先學會傾聽。
+先思考。
+先自我反省。
+先謹慎思考。
+內心富足，根本不需要靠別人的掌聲。
+內省勝過外耗。
+全心全意投入。
+全心投入你的人生目標。
+具體行動，面對挑戰。
+  </script>
+
+  <script>
+    const card = document.getElementById("card");
+    const adviceText = document.getElementById("adviceText");
+    const drawButton = document.getElementById("drawButton");
+
+    const rawAdviceText = document.getElementById("advice-data").textContent;
+
+    const ADVICES = rawAdviceText
+      .split(/\r?\n/)
+      .map(line => line.trim())
+      .filter(line => line);
+
+    function getTimeBasedIndex(timestamp) {
+      let x = BigInt(timestamp);
+
+      x ^= x << 13n;
+      x ^= x >> 7n;
+      x ^= x << 17n;
+
+      if (x < 0n) {
+        x = -x;
+      }
+
+      return Number(x % BigInt(ADVICES.length));
+    }
+
+    function createSparks(x, y) {
+      for (let i = 0; i < 28; i++) {
+        const spark = document.createElement("span");
+        spark.className = "spark";
+
+        const angle = Math.random() * Math.PI * 2;
+        const distance = 65 + Math.random() * 120;
+
+        spark.style.left = x + "px";
+        spark.style.top = y + "px";
+        spark.style.setProperty("--x", Math.cos(angle) * distance + "px");
+        spark.style.setProperty("--y", Math.sin(angle) * distance + "px");
+
+        document.body.appendChild(spark);
+
+        setTimeout(() => {
+          spark.remove();
+        }, 950);
+      }
+    }
+
+    function drawAdvice() {
+      if (!ADVICES.length) {
+        adviceText.textContent = "牌庫尚未載入。";
+        card.classList.add("revealed");
+        return;
+      }
+
+      const now = new Date();
+      const timestamp = now.getTime();
+      const index = getTimeBasedIndex(timestamp);
+      const advice = ADVICES[index];
+
+      card.classList.remove("revealed");
+
+      setTimeout(() => {
+        adviceText.textContent = advice;
+        card.classList.add("revealed");
+      }, 260);
+
+      const rect = drawButton.getBoundingClientRect();
+
+      createSparks(
+        rect.left + rect.width / 2,
+        rect.top + rect.height / 2
+      );
+    }
+
+    drawButton.addEventListener("click", drawAdvice);
+
+    console.log(`已載入 ${ADVICES.length} 條繁中建議。`);
+  </script>
+</body>
+</html>
