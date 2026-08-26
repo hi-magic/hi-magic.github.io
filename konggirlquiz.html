@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>港式生活內在旅程</title>
+  <style>
+    /* Nature-Inspired Color Palette */
+    :root {
+      --color-bg: #F8F6F2;       /* Sand/Cream */
+      --color-primary: #6B7F70;  /* Sage Green */
+      --color-secondary: #C39E8F; /* Soft Terracotta */
+      --color-text: #3D3D3D;     /* Warm Dark Gray */
+      --color-subtle: #9EA39D;   /* Soft Grey-Green */
+      --color-card-bg: #FFFFFF;
+      --font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: var(--font-family);
+    }
+
+    body {
+      background-color: var(--color-bg);
+      color: var(--color-text);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      line-height: 1.6;
+    }
+
+    /* Journal/Card Styling */
+    .journal-card {
+      background: var(--color-card-bg);
+      width: 100%;
+      max-width: 680px;
+      border-radius: 20px;
+      box-shadow: 0 8px 30px rgba(107, 127, 112, 0.1);
+      padding: 40px 30px;
+      transition: opacity 0.3s ease;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 35px;
+      position: relative;
+    }
+
+    header::after {
+      content: '';
+      display: block;
+      width: 50px;
+      height: 2px;
+      background-color: var(--color-secondary);
+      margin: 15px auto 0;
+      border-radius: 2px;
+    }
+
+    h1 {
+      font-size: 26px;
+      color: var(--color-primary);
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+
+    .subtitle {
+      color: var(--color-subtle);
+      font-size: 15px;
+      margin-top: 8px;
+      font-weight: 400;
+    }
+
+    .status-bar {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--color-primary);
+      margin-bottom: 15px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .prompt-text {
+      font-size: 19px;
+      font-weight: 500;
+      color: var(--color-text);
+      margin-bottom: 25px;
+      line-height: 1.5;
+    }
+
+    .options-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .option-btn {
+      width: 100%;
+      text-align: left;
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid #EAEAE8;
+      background-color: var(--color-card-bg);
+      color: var(--color-text);
+      font-size: 16px;
+      font-weight: 400;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .option-btn::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 4px;
+      background-color: var(--color-secondary);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .option-btn:hover {
+      border-color: var(--color-primary);
+      background-color: #FAF9F7;
+      color: var(--color-primary);
+      transform: translateY(-2px);
+    }
+
+    .option-btn:hover::before {
+      opacity: 1;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* Result View Layout */
+    .result-view {
+      text-align: left;
+    }
+
+    .result-header {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .result-intro {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--color-secondary);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 6px;
+    }
+
+    .result-type {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--color-primary);
+      letter-spacing: 0.5px;
+    }
+
+    /* Adjusted Image Container for 768x1366 Aspect Ratio */
+    .image-container {
+      width: 100%;
+      max-width: 320px; /* Limits width so high vertical images don't overwhelm screen */
+      aspect-ratio: 9 / 16; /* Matches 768:1366 proportions accurately */
+      border-radius: 16px;
+      overflow: hidden;
+      margin: 0 auto 30px auto;
+      background-color: #F1EFEA;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .image-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain; /* Keeps original scale intact without stretching or clipping */
+      display: block;
+    }
+
+    .section-block {
+      background-color: #FDFBFA;
+      border: 1px solid #F3ECE8;
+      padding: 20px;
+      border-radius: 14px;
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--color-primary);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .region-badge {
+      display: inline-block;
+      background-color: #E2E8E3;
+      color: var(--color-primary);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 2px 10px;
+      border-radius: 20px;
+      margin-left: 6px;
+    }
+
+    .section-content {
+      font-size: 15px;
+      color: var(--color-text);
+      line-height: 1.6;
+    }
+
+    .trait-tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .trait-tag {
+      background-color: #EFECE6;
+      color: #555;
+      font-size: 13px;
+      padding: 4px 12px;
+      border-radius: 6px;
+    }
+
+    .advice-list {
+      padding-left: 18px;
+      margin-top: 8px;
+    }
+
+    .advice-list li {
+      font-size: 14px;
+      color: var(--color-text);
+      margin-bottom: 8px;
+      line-height: 1.6;
+    }
+
+    .action-row {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .return-btn {
+      background-color: var(--color-primary);
+      color: #FFFFFF;
+      font-size: 15px;
+      font-weight: 500;
+      padding: 14px 32px;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      letter-spacing: 1px;
+    }
+
+    .return-btn:hover {
+      background-color: #5A6B5F;
+      transform: scale(1.02);
+    }
+
+    @media (max-width: 500px) {
+      .journal-card { padding: 30px 20px; }
+      h1 { font-size: 22px; }
+      .prompt-text { font-size: 17px; }
+      .option-btn { font-size: 15px; padding: 16px; }
+      .result-type { font-size: 24px; }
+      .image-container { max-width: 260px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="journal-card">
+    <header>
+      <h1>放慢腳步</h1>
+      <p class="subtitle">享受香港日常</p>
+    </header>
+
+    <!-- Exploration View (Questions) -->
+    <div id="exploration-container">
+      <div class="status-bar" id="question-status">情景 1 / 4</div>
+      <div class="prompt-text" id="question-prompt"></div>
+      <div class="options-stack" id="options-stack"></div>
+    </div>
+
+    <!-- Reflection View (Result) -->
+    <div id="reflection-container" class="result-view hidden">
+      <div class="result-header">
+        <div class="result-intro">你的內在屬性為</div>
+        <div class="result-type" id="result-type"></div>
+      </div>
+
+      <div class="image-container">
+        <img id="result-image" src="" alt="Lifestyle Archetype Image">
+      </div>
+
+      <!-- Core Philosophy -->
+      <div class="section-block">
+        <div class="section-title">🌱 生活追求</div>
+        <div class="section-content" id="result-philosophy"></div>
+      </div>
+
+      <!-- Recommended Region -->
+      <div class="section-block">
+        <div class="section-title">
+          📍 推薦出沒地區 <span class="region-badge" id="result-region"></span>
+        </div>
+        <div class="section-content" id="result-region-desc"></div>
+      </div>
+
+      <!-- Core Traits -->
+      <div class="section-block">
+        <div class="section-title">✨ 核心特質</div>
+        <div class="trait-tag-list" id="result-traits"></div>
+      </div>
+
+      <!-- Actionable Advice -->
+      <div class="section-block">
+        <div class="section-title">🍃 生活實踐建議</div>
+        <ol class="advice-list" id="result-advices"></ol>
+      </div>
+
+      <div class="action-row">
+        <button class="return-btn" onclick="restartJourney()">重回旅程</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const steps = [
+      {
+        prompt: "難得有一日放鬆休假，你最嚮往哪種安排？",
+        options: [
+          { text: "回歸山林，去塔門或大嶼山，安靜地聽浪聲，感受與大地的連結。", type: "A" },
+          { text: "走入藝文空間，去 PMQ 或大館，藉由展覽或獨立書店滋養心靈。", type: "B" },
+          { text: "流汗排毒，預約健身，或去 運動中找回身體的掌控感。", type: "C" },
+          { text: "主動約齊朋友去聚會，分享彼此的生活點滴。", type: "D" },
+          { text: "探索藝術，尋找限量黑膠，在 Livehouse 聽音樂或者去美術館、博物館。", type: "E" }
+        ]
+      },
+      {
+        prompt: "出糧之後，除了基本生存支出，你會最捨得做甚麼？",
+        options: [
+          { text: "報讀專業證書或線上課程，購買書籍。", type: "F" },
+          { text: "預訂 Omakase 或飛往度假勝地，感受生活的美好。", type: "G" },
+          { text: "捐予志願機構，或購買物資支援社區。", type: "H" },
+          { text: "健康投資，購入健身裝備或補充品。", type: "C" },
+          { text: "購入限量潮牌或設計師玩具，用獨特的符號定義自己。", type: "E" }
+        ]
+      },
+      {
+        prompt: "若你為珍惜的人籌辦周末活動，你希望為大家帶來怎樣的體驗？",
+        options: [
+          { text: "傾聽與共鳴，營造溫馨、有歸屬感的聊天氛圍。", type: "D" },
+          { text: "享受美食好酒，氣氛輕鬆，大家純粹及時行樂。", type: "G" },
+          { text: "帶大家睇小眾劇場或藝術電影，結束後一同品味。", type: "B" },
+          { text: "社會連結，組織大家去淨灘或探訪長者，度過一個無私奉獻的週末。", type: "H" },
+          { text: "回歸自然的寧靜，帶大家去郊外戶外 ，遠離塵囂，呼吸新鮮空氣。", type: "A" }
+        ]
+      },
+      {
+        prompt: "在工作或學業遇到樽頸時，你通常會如何應對？",
+        options: [
+          { text: "透過汗水與紀律，重新掌控身體狀態，用積極自信面對挑戰。", type: "C" },
+          { text: "知識型充電，立即尋找書籍或線上課程請教專家。", type: "F" },
+          { text: "專注突破與自我實現，咬緊牙關加班專注，追求卓越。", type: "I" },
+          { text: "心靈的轉化，將挫折化為創作或情感養分，從文學與藝術中尋求共鳴。", type: "B" },
+          { text: "找回平靜與自由，抽空回歸大自然，去海邊或山上靜心走走。", type: "A" }
+        ]
+      }
+    ];
+
+    const database = {
+      A: {
+        title: "大自然系",
+        philosophy: "喜愛大自然，平靜、敏銳、崇尚自由與生機。",
+        region: "西貢",
+        regionDesc: "被譽為「香港後花園」，坐擁遼闊海岸線、地質公園與離島步道。遠離高樓壓迫，漫步自然山海間，能提供源源不絕的生機與平靜。",
+        image: "konggirlquiz/nature.png",
+        coreTraits: ["親近自然", "返璞歸真", "心曠神怡", "崇尚自由"],
+        advices: [
+          "嘗試溯溪、潛水或沿海散步，感受海洋與溪流帶來的能量。",
+          "嘗試赤腳行走於草地，感受泥土的溫度，呼吸森林釋放的芬多精。",
+          "在家中栽培植物，或參加植栽手作課程。",
+          "探索四季變化。",
+          "試著走入山林時，專注聆聽風吹過樹葉的沙沙聲、溪流水聲與鳥鳴；觀察植物的紋理與晨露。",
+          "透過攝影、水彩繪畫或撰寫自然日記，記錄每一次與天氣、植物或野生動物的偶遇。",
+          "遠離城市光害，在露營中體驗夜晚的寂靜與滿天繁星。"
+        ]
+      },
+      B: {
+        title: "藝文靈魂",
+        philosophy: "喜愛藝術與文學，敏銳、深刻、富有想像力與人文關懷。",
+        region: "上環",
+        regionDesc: "新舊交融的文青聚落，匯聚古董店、獨立畫廊、特色咖啡館與歷史建築。沿荷李活道與太平山街漫步，盡顯深厚人文底蘊與當代藝術氣息。",
+        image: "konggirlquiz/artist.png",
+        coreTraits: ["敏銳細膩", "深邃涵養", "審美獨到", "沉浸思考"],
+        advices: [
+          "嘗試「主題式閱讀」（例如探討某一時期文學作品或流派），體會作者的時代背景與思考脈絡。",
+          "嘗試寫作詩歌、散文，或體驗繪畫、陶藝、攝影等創作，用雙手將內心的抽象情感具像化。",
+          "定期造訪美術館、畫廊、獨立書店與劇場，親自感受原作的質感、展場的光影與舞台表演的臨場張力。",
+          "於字裡行間閱覽萬千世界，體悟人生百態。",
+          "參加讀書會或藝文沙龍，在不同的思維碰撞中拓寬理解視角。",
+          "看完一本書、一幅畫或一部戲後，記錄當下的情感，建立屬於自己的藝文札記。",
+          "視展覽館與圖書館為避風港，在藝術與文學的滋養下保有內心的純粹與自由。"
+        ]
+      },
+      I: {
+        title: "事業狂人",
+        philosophy: "喜愛工作，專注、熱情、追求卓越與自我實現。",
+        region: "中環",
+        regionDesc: "香港國際金融與商業核心，頂尖企業與專業人才雲集。高效率與快速節奏的環境，最能激發追求卓越、實現事業野心的專注熱情。",
+        image: "konggirlquiz/workaholic.png",
+        coreTraits: ["樂業敬業", "精益求精", "追求卓越", "自我實現"],
+        advices: [
+          "不只視工作為生計，更將其視為雕琢自我、實現抱負與展現才華的舞台。",
+          "主動接觸業界新知、參與專業論壇或學習新技能，保持對領域的好奇心與敏銳度。",
+          "在專注的當下體驗充實而踏實的心流狀態。",
+          "學會主動休息與適時抽離，避免過度耗竭，保持身心平衡。",
+          "定期審視工作背後的深層意義，確保日常的努力始終契合個人的核心價值與長遠目標。",
+          "定期盤點與紀錄成就，紀錄解決過的難題與獲得的突破，作為自我肯定與職涯躍進的養分。",
+          "將熱情挹注於事業，在解決挑戰與創造價值中獲得極大的滿足與成就感。"
+        ]
+      },
+      D: {
+        title: "社交熱心",
+        philosophy: "喜愛朋友聚會的人，熱情外向、重視情誼、善於傾聽與營造氛圍。",
+        region: "蘭桂坊",
+        regionDesc: "享譽國際的社交與餐飲重鎮，酒吧與異國餐廳林立。熱烈開放的氛圍極具感染力，無論是歡聚微醺還是傾訴交流，都能輕鬆營造熱鬧氣氛。",
+        image: "konggirlquiz/friend.png",
+        coreTraits: ["熱絡好客", "活力四射", "善解人意", "凝聚力強"],
+        advices: [
+          "珍視每一次相聚的時光，在歡聲笑語與深度對話中汲取溫暖與能量。",
+          "天生自帶熱情與感染力，總能將人們凝聚在一起。",
+          "熱愛生活的熱鬧與煙火氣，用真誠與陪伴將平凡的日子點綴得精彩紛呈。",
+          "嘗試舉辦主題派對（如桌上遊戲、手作工作坊、野餐或戶外露營），增加互動樂趣與新鮮感。",
+          "安排適合熱鬧的大群體活動，也可定期舉辦3–4人的微型聚會，創造適合深度心靈對話的空間。",
+          "照顧不同性格的朋友，聚會時留意較內向或新加入的朋友，適時丟球引導發言，讓每個人都有被重視的歸屬感。",
+          "熱愛社交之餘，也留白時間給自己充電，充沛的心境能讓每次相聚更真誠。"
+        ]
+      },
+      G: {
+        title: "享樂主義",
+        philosophy: "喜愛享樂，及時行樂、熱愛生活、感官敏銳與豁達樂觀。",
+        region: "銅鑼灣",
+        regionDesc: "繁華不夜城，匯聚頂級購物商場、米芝蓮美食與多元娛樂體驗。極致繁華滿足視覺與味覺追求，隨時提供即時滿足與熱鬧活力。",
+        image: "konggirlquiz/enthusiast.png",
+        coreTraits: ["及時行樂", "熱愛生活", "懂得生活", "灑脫豁達"],
+        advices: [
+          "熱情擁抱生活中的每一刻，將尋常日子活出豐盈多彩的質感。",
+          "敏銳地捕捉食物的美味、風景的美好與歡樂的瞬間，深諳將快樂最大化的生活藝術。",
+          "不為明日憂慮，不被過往束縛，以灑脫的心態品味當下的歡愉與自在。",
+          "將焦點從物質量化轉向體驗質感，例如品嚐一道精心烹調的美食、欣賞一場高品質的演出，遠勝於無意識的過度消費。",
+          "將享樂延伸至身心健康的領域，如高質的 SPA 療程、戶外渡假或瑜伽體驗，讓身心得到真正的滋養與修復。",
+          "用對生活的熱情感染周遭的人，成為朋友與家人心中的「生活指南」與快樂泉源。",
+          "透過照片、文字或影片紀錄每一次精彩的享樂歷程，讓當下的快樂轉化為長久陪伴內心的美好回顧。"
+        ]
+      },
+      C: {
+        title: "健體狂熱",
+        philosophy: "形容喜愛健身與運動，充滿活力、熱情自律、追求健康與積極自信。",
+        region: "啟德海濱",
+        regionDesc: "新一代體育與運動樞紐，設有大型海濱長廊、單車徑與體育場館。豐富的戶外設施與空間，最適合積極、熱愛運動的健康生活族。",
+        image: "konggirlquiz/sporty.png",
+        coreTraits: ["堅韌不拔", "極致自律", "朝氣蓬勃", "追求卓越"],
+        advices: [
+          "每一次突破極限、完成目標的瞬間，都在重新定義自己的強大與可能。",
+          "不畏懼枯燥的訓練與酸痛，在漫長的路途與重量面前，不斷打破昨天的自己。",
+          "在力量與耐力的交織中找到專注的節奏，將運動轉化為對內探索、鍛鍊心智。",
+          "定期嘗試不同的運動類型（如瑜伽、壁球、抱石、SUP），避免單一訓練帶來的倦怠感。",
+          "比起數字，更重視體能的提升、精神狀態的改善與運動時的心流體驗。",
+          "將運動後的放鬆、伸展與睡眠視為訓練的一部分，預防運動傷害。",
+          "挑選舒適且具功能性的運動服飾與器材，營造充滿儀式感的運動氛圍，讓每次出發都充滿期待。"
+        ]
+      },
+      F: {
+        title: "終身學習",
+        philosophy: "喜愛進修，終身學習、求知若渴、自我迭代與開放心態。",
+        region: "九龍塘",
+        regionDesc: "傳統文教區，坐落多所高等學府及優質教育機構。濃厚的學術氛圍與學習資源，為自我提升提供最佳環境。",
+        image: "konggirlquiz/learner.png",
+        coreTraits: ["求知若渴", "好學不倦", "思想開放", "追求卓越"],
+        advices: [
+          "視學習為終身的生活方式，在知識的海洋裡不斷拓寬思維的邊界。",
+          "不滿足於現狀，以好奇心驅動探索，透過持續進修賦予自我無限的可能。",
+          "設定明確的學習目標，採用 SMART 原則（具體、可衡量、可達成）規劃進修計畫，區分「立即應用」的技能型學習與「長遠薰陶」的心智型學習。",
+          "試著用簡單的語言將學到的新知識講給朋友聽，或是寫成部落格文章與心得，透過「教」與「輸出」來檢驗與鞏固理解。",
+          "善用通勤、運動等碎片化時間收聽 Podcast、聽書或閱讀文章，讓學習無痛成為生活習慣。",
+          "與同樣熱愛進修的高能量圈子交流，透過同儕互動與討論激盪思考，互相督促與成長。",
+          "善用個人知識管理（PKM）工具（如 Notion、Obsidian 或 Readwise）紀錄筆記，定期梳理，建立屬於自己的知識庫。"
+        ]
+      },
+      E: {
+        title: "潮流與次文化",
+        philosophy: "喜愛潮流與次文化的人，獨特的審美、反叛精神，以及對特定社群與符號的深層認同。",
+        region: "旺角",
+        regionDesc: "潮流文化與次文化大本營，集結動漫卡牌、偶像周邊、潮流買手店與次文化小店。充滿極具強烈個人色彩的次文化社群凝聚力。",
+        image: "konggirlquiz/fashionista.png",
+        coreTraits: ["前衛敏銳", "不落俗套", "反叛主張", "美學洞察"],
+        advices: [
+          "穿著不只是視覺的堆疊，而是將態度與次文化符號縫入日常的自我宣言。",
+          "游走於主流邊緣，在街頭、音樂與藝術的交界處，精準捕捉屬於小眾社群的生命力。",
+          "以獨到的審美重新定義屬於自己的潮流。",
+          "在商業資本高度包裝潮流的時代，保持獨立思考，分清「真正的次文化精神」與「複製的商業符號」。",
+          "跨領域體驗，次文化從非單一存在，通常結合了音樂、視覺藝術與運動。",
+          "參與獨立刊物與實體創作，嘗試發行自己的獨立小冊子、拍攝底片膠卷，或透過翻玩、DIY 改裝服飾來輸出個人主張。",
+          "尋找同頻社群，造訪小眾選品店、獨立唱片行或地下藝文空間，與同好交流觀點，拓展視野。"
+        ]
+      },
+      H: {
+        title: "熱心義工",
+        philosophy: "喜愛義工活動，無私奉獻、社會關心與實踐精神。",
+        region: "深水埗",
+        regionDesc: "香港社會創新與民間互助力量最活躍的地區。社區內設有眾多非牟利機構、共融空間與義工服務點，提供極具實踐溫度的社區關懷土壤。",
+        image: "konggirlquiz/helper.png",
+        coreTraits: ["熱忱奉獻", "心懷大愛", "知行合一", "熱心公益"],
+        advices: [
+          "以微光照亮角落，用無私的付出溫暖人心，在奉獻中體會生命。",
+          "心懷對世界的關懷，腳踏實地走進人群，用傾聽與陪伴建立深層的情感連結。",
+          "將對社會的愛轉化為具體行動，在服務他人的同時完成自我的昇華。",
+          "專長型義工（Pro Bono），結合個人專業技能進行服務，如提供程式開發、視覺設計、法律諮詢、課業輔導或攝影記錄，讓服務效益最大化。",
+          "選擇一兩個認同理念的非營利組織長期合作，建立穩定的信任關係。",
+          "興趣結合服務，若喜愛大自然可參與環境保育與淨灘，若喜愛動物可協助流浪動物保護，若善於陪伴則可投入老弱關懷與社區服務。",
+          "每次活動後紀錄所思所想，梳理服務過程中的挑戰與體悟，幫助自己持續成長。"
+        ]
+      }
+    };
+
+    let stepIndex = 0;
+    let scores = {};
+
+    function startStep() {
+      const s = steps[stepIndex];
+      document.getElementById('question-status').innerText = `情景 ${stepIndex + 1} / ${steps.length}`;
+      document.getElementById('question-prompt').innerText = s.prompt;
+      
+      const optionsStack = document.getElementById('options-stack');
+      optionsStack.innerHTML = '';
+
+      s.options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.innerText = opt.text;
+        btn.onclick = () => recordEnergy(opt.type);
+        optionsStack.appendChild(btn);
+      });
+    }
+
+    function recordEnergy(type) {
+      scores[type] = (scores[type] || 0) + 1;
+      stepIndex++;
+
+      const card = document.querySelector('.journal-card');
+      card.style.opacity = '0';
+      
+      setTimeout(() => {
+        if (stepIndex < steps.length) {
+          startStep();
+        } else {
+          showReflection();
+        }
+        card.style.opacity = '1';
+      }, 300);
+    }
+
+    function showReflection() {
+      document.getElementById('exploration-container').classList.add('hidden');
+      document.getElementById('reflection-container').classList.remove('hidden');
+
+      let primaryArchetype = 'A';
+      let maxPresence = 0;
+      for (const [type, count] of Object.entries(scores)) {
+        if (count > maxPresence) {
+          maxPresence = count;
+          primaryArchetype = type;
+        }
+      }
+
+      const data = database[primaryArchetype];
+
+      document.getElementById('result-type').innerText = data.title;
+      document.getElementById('result-image').src = data.image;
+      document.getElementById('result-image').alt = data.title;
+      document.getElementById('result-philosophy').innerText = data.philosophy;
+      document.getElementById('result-region').innerText = data.region;
+      document.getElementById('result-region-desc').innerText = data.regionDesc;
+
+      const traitsContainer = document.getElementById('result-traits');
+      traitsContainer.innerHTML = '';
+      data.coreTraits.forEach(trait => {
+        const tag = document.createElement('span');
+        tag.className = 'trait-tag';
+        tag.innerText = trait;
+        traitsContainer.appendChild(tag);
+      });
+
+      const advicesContainer = document.getElementById('result-advices');
+      advicesContainer.innerHTML = '';
+      data.advices.forEach(adv => {
+        const li = document.createElement('li');
+        li.innerText = adv;
+        advicesContainer.appendChild(li);
+      });
+    }
+
+    function restartJourney() {
+      stepIndex = 0;
+      scores = {};
+      document.getElementById('reflection-container').classList.add('hidden');
+      document.getElementById('exploration-container').classList.remove('hidden');
+      startStep();
+    }
+
+    window.onload = startStep;
+  </script>
+</body>
+</html>
