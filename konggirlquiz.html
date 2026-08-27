@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>港式生活內在旅程</title>
+  <title>港式生活</title>
   <style>
     /* Nature-Inspired Color Palette */
     :root {
@@ -95,23 +95,24 @@
     .options-stack {
       display: flex;
       flex-direction: column;
-      gap: 15px;
+      gap: 12px;
     }
 
     .option-btn {
       width: 100%;
       text-align: left;
-      padding: 20px;
+      padding: 16px 20px;
       border-radius: 12px;
       border: 1px solid #EAEAE8;
       background-color: var(--color-card-bg);
       color: var(--color-text);
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 400;
       cursor: pointer;
       transition: all 0.3s ease;
       position: relative;
       overflow: hidden;
+      line-height: 1.5;
     }
 
     .option-btn::before {
@@ -167,11 +168,10 @@
       letter-spacing: 0.5px;
     }
 
-    /* Adjusted Image Container for 768x1366 Aspect Ratio */
     .image-container {
       width: 100%;
-      max-width: 320px; /* Limits width so high vertical images don't overwhelm screen */
-      aspect-ratio: 9 / 16; /* Matches 768:1366 proportions accurately */
+      max-width: 320px;
+      aspect-ratio: 9 / 16;
       border-radius: 16px;
       overflow: hidden;
       margin: 0 auto 30px auto;
@@ -182,7 +182,7 @@
     .image-container img {
       width: 100%;
       height: 100%;
-      object-fit: contain; /* Keeps original scale intact without stretching or clipping */
+      object-fit: contain;
       display: block;
     }
 
@@ -275,7 +275,7 @@
       .journal-card { padding: 30px 20px; }
       h1 { font-size: 22px; }
       .prompt-text { font-size: 17px; }
-      .option-btn { font-size: 15px; padding: 16px; }
+      .option-btn { font-size: 14px; padding: 14px; }
       .result-type { font-size: 24px; }
       .image-container { max-width: 260px; }
     }
@@ -316,7 +316,7 @@
       <!-- Recommended Region -->
       <div class="section-block">
         <div class="section-title">
-          📍 推薦出沒地區 <span class="region-badge" id="result-region"></span>
+          📍 出沒地區 <span class="region-badge" id="result-region"></span>
         </div>
         <div class="section-content" id="result-region-desc"></div>
       </div>
@@ -340,45 +340,48 @@
   </div>
 
   <script>
+    // 4 Questions x 5 Options = 20 total option slots.
+    // Archetypes A through I appear EXACTLY 2 times each (18 slots, max 2 points each).
+    // Neutral options appear 2 times (2 slots, 0 points).
     const steps = [
       {
-        prompt: "難得有一日放假，你最嚮往哪種安排？",
+        prompt: "難得有一個完全無約的週末，你最希望如何開啟這一天？",
         options: [
-          { text: "回歸山林，去塔門或大嶼山，安靜地聽浪聲，感受與大地的連結。", type: "A" },
-          { text: "尋找限量黑膠，走入藝文空間，去美術館、博物館、或獨立書店滋養心靈。", type: "B" },
-          { text: "流汗排毒，預約健身，或去運動中找回身體的掌控感。", type: "C" },
-          { text: "主動約齊朋友去聚會，分享彼此的生活點滴。", type: "D" },
-          { text: "支持心愛的偶像，參與線下活動或者享受視聽娛樂如電影和電視節目 。", type: "E" }
+          { text: "遠離市區，去大嶼山或西貢看海聽浪，感受自然生機。", type: "A" },
+          { text: "穿上運動服，去 Gym 房或海濱長廊晨練。", type: "C" },
+          { text: "預訂精緻的Brunch，無後顧之憂地享受美食。", type: "G" },
+          { text: "購買動漫或偶像周邊，或參與同人展。", type: "E" },
+          { text: "純粹順其自然，留在家中隨心休息，不想特別規劃。", type: null }
         ]
       },
       {
-        prompt: "出糧之後，除了基本生存支出，你會最捨得做甚麼？",
+        prompt: "漫步在香港街頭，哪種地方最容易吸引你停下腳步？",
         options: [
-          { text: "報讀專業證書或線上課程，購買書籍。", type: "F" },
-          { text: "預訂 Omakase 或飛往度假勝地，感受生活的美好。", type: "G" },
-          { text: "捐予志願機構，或購買物資支援社區。", type: "H" },
-          { text: "健康投資，購入健身裝備或補充品。", type: "C" },
-          { text: "購入偶像或角色同款、官方周邊、同人作品。", type: "E" }
+          { text: "獨立書店、藝文畫廊或歷史建築展覽。", type: "B" },
+          { text: "熱鬧的酒吧或聚會場所，享受開懷大笑的社交氛圍。", type: "D" },
+          { text: "社區互助小店或正在舉辦公益義賣的慈善攤位。", type: "H" },
+          { text: "連鎖咖啡店，一邊喝咖啡一邊梳理工作與目標。", type: "I" },
+          { text: "收聽 Podcast 或閱讀專業書籍，自我升級。", type: "F" }
         ]
       },
       {
-        prompt: "若你為珍惜的人籌辦周末活動，你希望為大家帶來怎樣的體驗？",
+        prompt: "當你發覺自己最近狀態有些停滯時，你最傾向用哪種方式突破？",
         options: [
-          { text: "傾聽與共鳴，營造溫馨、有歸屬感的聊天氛圍。", type: "D" },
-          { text: "享受美食好酒，氣氛輕鬆，大家純粹及時行樂。", type: "G" },
-          { text: "帶大家睇小眾劇場或藝術電影，結束後一同品味。", type: "B" },
-          { text: "社會連結，組織大家去淨灘或探訪長者，度過一個無私奉獻的週末。", type: "H" },
-          { text: "回歸自然的寧靜，帶大家去郊外戶外，遠離塵囂，呼吸新鮮空氣。", type: "A" }
+          { text: "運動排毒或挑戰戶外項目，用汗水找回主動權。", type: "C" },
+          { text: "主動約齊三五知己聚會，在熱鬧陪伴中尋找能量。", type: "D" },
+          { text: "報名線上課程或進修新技能，用知識突破樽頸。", type: "F" },
+          { text: "走向戶外山林露營或溯溪，在天地間找回內心平靜。", type: "A" },
+          { text: "隨機處理一些日常雜事，沒有方向。", type: null }
         ]
       },
       {
-        prompt: "在工作或學業遇到樽頸時，你通常會如何應對？",
+        prompt: "出糧之後，除了日常基本開支，你最捨得做甚麼？",
         options: [
-          { text: "透過汗水與紀律，重新掌控身體狀態，用積極自信面對挑戰。", type: "C" },
-          { text: "知識型充電，立即尋找書籍或線上課程。", type: "F" },
-          { text: "專注自我實現，咬緊牙關加班，追求卓越。", type: "I" },
-          { text: "心靈的轉化，將挫折化為創作或情感養分，從文學與藝術中尋求共鳴。", type: "B" },
-          { text: "找回平靜與自由，抽空回歸大自然，去海邊或山上走走。", type: "A" }
+          { text: "購入周邊、應援物或同款，表達真愛。", type: "E" },
+          { text: "升級高效能工作設備或專業工具，提升生產力。", type: "I" },
+          { text: "沉浸在劇場、獨立電影或文學創作中，滋養精神世界。", type: "B" },
+          { text: "支持公益團體，為社會帶來改變。", type: "H" },
+          { text: "預訂頂級 SPA 療程或米芝蓮饗宴，及時行樂犒賞自己。", type: "G" }
         ]
       }
     ];
@@ -389,7 +392,7 @@
         philosophy: "喜愛大自然，平靜、敏銳、崇尚自由與生機。",
         region: "西貢",
         regionDesc: "被譽為「香港後花園」，坐擁遼闊海岸線、地質公園與離島步道。遠離高樓壓迫，漫步自然山海間，能提供源源不絕的生機與平靜。",
-        image: "konggirlquiz/nature.png",
+        image: "nature.png",
         coreTraits: ["親近自然", "返璞歸真", "心曠神怡", "崇尚自由"],
         advices: [
           "嘗試溯溪、潛水或沿海散步，感受海洋與溪流帶來的能量。",
@@ -406,7 +409,7 @@
         philosophy: "喜愛藝術與文學，敏銳、深刻、富有想像力與人文關懷。",
         region: "上環",
         regionDesc: "新舊交融的文青聚落，匯聚古董店、獨立畫廊、特色咖啡館與歷史建築。沿荷李活道與太平山街漫步，盡顯深厚人文底蘊與當代藝術氣息。",
-        image: "konggirlquiz/artist.png",
+        image: "artist.png",
         coreTraits: ["敏銳細膩", "深邃涵養", "審美獨到", "沉浸思考"],
         advices: [
           "嘗試「主題式閱讀」（例如探討某一時期文學作品或流派），體會作者的時代背景與思考脈絡。",
@@ -423,7 +426,7 @@
         philosophy: "喜愛工作，專注、熱情、追求卓越與自我實現。",
         region: "中環",
         regionDesc: "香港國際金融與商業核心，頂尖企業與專業人才雲集。高效率與快速節奏的環境，最能激發追求卓越、實現事業野心的專注熱情。",
-        image: "konggirlquiz/workaholic.png",
+        image: "workaholic.png",
         coreTraits: ["樂業敬業", "精益求精", "追求卓越", "自我實現"],
         advices: [
           "不只視工作為生計，更將其視為雕琢自我、實現抱負與展現才華的舞台。",
@@ -436,11 +439,11 @@
         ]
       },
       D: {
-        title: "社交熱心",
+        title: "社交熱心人",
         philosophy: "喜愛朋友聚會的人，熱情外向、重視情誼、善於傾聽與營造氛圍。",
         region: "蘭桂坊",
         regionDesc: "享譽國際的社交與餐飲重鎮，酒吧與異國餐廳林立。熱烈開放的氛圍極具感染力，無論是歡聚微醺還是傾訴交流，都能輕鬆營造熱鬧氣氛。",
-        image: "konggirlquiz/friend.png",
+        image: "friend.png",
         coreTraits: ["熱絡好客", "活力四射", "善解人意", "凝聚力強"],
         advices: [
           "珍視每一次相聚的時光，在歡聲笑語與深度對話中汲取溫暖與能量。",
@@ -453,11 +456,11 @@
         ]
       },
       G: {
-        title: "享樂主義",
+        title: "享樂主義者",
         philosophy: "喜愛享樂，及時行樂、熱愛生活、感官敏銳與豁達樂觀。",
         region: "銅鑼灣",
         regionDesc: "繁華不夜城，匯聚頂級購物商場、米芝蓮美食與多元娛樂體驗。極致繁華滿足視覺與味覺追求，隨時提供即時滿足與熱鬧活力。",
-        image: "konggirlquiz/enthusiast.png",
+        image: "enthusiast.png",
         coreTraits: ["及時行樂", "熱愛生活", "懂得生活", "灑脫豁達"],
         advices: [
           "熱情擁抱生活中的每一刻，將尋常日子活出豐盈多彩的質感。",
@@ -466,7 +469,7 @@
           "將焦點從物質量化轉向體驗質感，例如品嚐一道精心烹調的美食、欣賞一場高品質的演出，遠勝於無意識的過度消費。",
           "將享樂延伸至身心健康的領域，如高質的 SPA 療程、戶外渡假或瑜伽體驗，讓身心得到真正的滋養與修復。",
           "用對生活的熱情感染周遭的人，成為朋友與家人心中的「生活指南」與快樂泉源。",
-          "透過照片、文字或影片紀錄每一次精彩的享樂歷程，讓當下的快樂轉化為長久陪伴內心的美好回顧。"
+          "透過照片、文字或影片紀錄每一次精彩的享樂歷程，讓當下的快樂轉化為長久陪伴內心的美好回慮。"
         ]
       },
       C: {
@@ -474,7 +477,7 @@
         philosophy: "形容喜愛健身與運動，充滿活力、熱情自律、追求健康與積極自信。",
         region: "啟德海濱",
         regionDesc: "新一代體育與運動樞紐，設有大型海濱長廊、單車徑與體育場館。豐富的戶外設施與空間，最適合積極、熱愛運動的健康生活族。",
-        image: "konggirlquiz/sporty.png",
+        image: "sporty.png",
         coreTraits: ["堅韌不拔", "極致自律", "朝氣蓬勃", "追求卓越"],
         advices: [
           "每一次突破極限、完成目標的瞬間，都在重新定義自己的強大與可能。",
@@ -487,11 +490,11 @@
         ]
       },
       F: {
-        title: "終身學習",
+        title: "終身學習者",
         philosophy: "喜愛進修，終身學習、求知若渴、自我迭代與開放心態。",
         region: "九龍塘",
         regionDesc: "傳統文教區，坐落多所高等學府及優質教育機構。濃厚的學術氛圍與學習資源，為自我提升提供最佳環境。",
-        image: "konggirlquiz/learner.png",
+        image: "learner.png",
         coreTraits: ["求知若渴", "好學不倦", "思想開放", "追求卓越"],
         advices: [
           "視學習為終身的生活方式，在知識的海洋裡不斷拓寬思維的邊界。",
@@ -504,13 +507,13 @@
         ]
       },
       E: {
-        title: "潮流偶像與次文化",
+        title: "追星 / 次文化夥伴",
         philosophy: "喜愛潮流偶像與次文化的人，不畏世俗眼光，以及對特定作品、角色、CP 與符號的深層認同。",
         region: "旺角",
         regionDesc: "追星文化與次文化大本營，集結動漫卡牌、偶像周邊、同人繪師作品。充滿強烈個人色彩與社群凝聚力，隨處可見同好交流。",
-        image: "konggirlquiz/fashionista.png",
+        image: "fashionista.png",
         coreTraits: ["前衛敏銳", "考據學家", "真愛至上", "社群共鳴"],
-advices: [
+        advices: [
           "穿著與配件不只是視覺堆疊，而是將對「推」（最愛的角色/偶像）的愛意與符號縫入日常的自我宣言。組裝痛包、搭配應援色穿搭，向同好悄悄發送電波。",
           "游走於主流邊緣，在繪師同人誌、同人展，捕捉專屬小眾社群的生命力。",
           "將私人空間打造為精神避難所，精心排列祭壇、展示櫃與周邊，在日常生活中構建專屬的精神領地。",
@@ -522,10 +525,10 @@ advices: [
       },
       H: {
         title: "熱心義工",
-        philosophy: "喜愛義工活動，無私奉獻、社會關心與實踐精神。",
+        philosophy: "喜愛義工活動，無私奉獻、社會關懷與實踐精神。",
         region: "深水埗",
         regionDesc: "香港社會創新與民間互助力量最活躍的地區。社區內設有眾多非牟利機構、共融空間與義工服務點，提供極具實踐溫度的社區關懷土壤。",
-        image: "konggirlquiz/helper.png",
+        image: "helper.png",
         coreTraits: ["熱忱奉獻", "心懷大愛", "知行合一", "熱心公益"],
         advices: [
           "以微光照亮角落，用無私的付出溫暖人心，在奉獻中體會生命。",
@@ -540,7 +543,7 @@ advices: [
     };
 
     let stepIndex = 0;
-    let scores = {};
+    let scores = { A: 0, B: 0, C: 0, D: 0, E: 0, F: 0, G: 0, H: 0, I: 0 };
 
     function startStep() {
       const s = steps[stepIndex];
@@ -560,7 +563,9 @@ advices: [
     }
 
     function recordEnergy(type) {
-      scores[type] = (scores[type] || 0) + 1;
+      if (type && scores.hasOwnProperty(type)) {
+        scores[type] += 1;
+      }
       stepIndex++;
 
       const card = document.querySelector('.journal-card');
@@ -580,15 +585,19 @@ advices: [
       document.getElementById('exploration-container').classList.add('hidden');
       document.getElementById('reflection-container').classList.remove('hidden');
 
-      let primaryArchetype = 'A';
-      let maxPresence = 0;
+      let maxScore = -1;
+      let topArchetypes = [];
+
       for (const [type, count] of Object.entries(scores)) {
-        if (count > maxPresence) {
-          maxPresence = count;
-          primaryArchetype = type;
+        if (count > maxScore) {
+          maxScore = count;
+          topArchetypes = [type];
+        } else if (count === maxScore) {
+          topArchetypes.push(type);
         }
       }
 
+      const primaryArchetype = topArchetypes[Math.floor(Math.random() * topArchetypes.length)];
       const data = database[primaryArchetype];
 
       document.getElementById('result-type').innerText = data.title;
@@ -618,7 +627,7 @@ advices: [
 
     function restartJourney() {
       stepIndex = 0;
-      scores = {};
+      scores = { A: 0, B: 0, C: 0, D: 0, E: 0, F: 0, G: 0, H: 0, I: 0 };
       document.getElementById('reflection-container').classList.add('hidden');
       document.getElementById('exploration-container').classList.remove('hidden');
       startStep();
